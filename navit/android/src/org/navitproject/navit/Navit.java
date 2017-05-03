@@ -322,7 +322,7 @@ public class Navit extends Activity
 		status_bar_height = (shid > 0) ? resources.getDimensionPixelSize(shid) : 0;
 		action_bar_default_height = (adhid > 0) ? resources.getDimensionPixelSize(adhid) : 0;
 		navigation_bar_height = (nhid > 0) ? resources.getDimensionPixelSize(nhid) : 0;
-		navigation_bar_height_landscape = (nhid > 0) ? resources.getDimensionPixelSize(nhlid) : 0;
+		navigation_bar_height_landscape = (nhlid > 0) ? resources.getDimensionPixelSize(nhlid) : 0;
 		navigation_bar_width = (nwid > 0) ? resources.getDimensionPixelSize(nwid) : 0;
 		Log.d(TAG, String.format("status_bar_height=%d, action_bar_default_height=%d, navigation_bar_height=%d, navigation_bar_height_landscape=%d, navigation_bar_width=%d", 
 				status_bar_height, action_bar_default_height, navigation_bar_height, navigation_bar_height_landscape, navigation_bar_width));
@@ -676,10 +676,16 @@ public class Navit extends Activity
 				startActivityForResult(map_download_list_activity, Navit.NavitDownloaderSelectMap_id);
 				break;
 			case 5 :
-				// toggle the normal POI layers (to avoid double POIs)
+				// toggle the normal POI layers and labels (to avoid double POIs)
 				Message msg = Message.obtain(N_NavitGraphics.callback_handler, NavitGraphics.msg_type.CLB_CALL_CMD.ordinal());
 				Bundle b = new Bundle();
 				b.putString("cmd", "toggle_layer(\"POI Symbols\");");
+				msg.setData(b);
+				msg.sendToTarget();
+
+				msg = Message.obtain(N_NavitGraphics.callback_handler, NavitGraphics.msg_type.CLB_CALL_CMD.ordinal());
+				b = new Bundle();
+				b.putString("cmd", "toggle_layer(\"POI Labels\");");
 				msg.setData(b);
 				msg.sendToTarget();
 
